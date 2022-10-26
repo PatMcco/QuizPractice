@@ -1,5 +1,6 @@
 package com.example.quizpractice;
 import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,15 +11,15 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 public class Questions extends AppCompatActivity {
 
     TextView defWindow;
     TextView pageNum;
-    Button bt_ans1,bt_ans2,bt_ans3,bt_ans4;
+    Button bt_ans1,bt_ans2,bt_ans3,bt_ans4,bt_submit;
     ArrayList<String>terms = new ArrayList<>();
     ArrayList<String>definitions = new ArrayList<>();
     Map<String,String>hash = new HashMap<>();
@@ -31,6 +32,8 @@ public class Questions extends AppCompatActivity {
     String eachTerm;
     long seed = System.nanoTime();
     int currentPage = 0;
+    Intent intent;
+    int Score;
 
 
 
@@ -45,6 +48,7 @@ public class Questions extends AppCompatActivity {
         bt_ans2 = findViewById(R.id.bt_ans2);
         bt_ans3 = findViewById(R.id.bt_ans3);
         bt_ans4 = findViewById(R.id.bt_ans4);
+        bt_submit = findViewById(R.id.bt_submit);
         pageNum.setText("1");
 
         //read in the definitions raw file to an arraylist
@@ -82,33 +86,35 @@ public class Questions extends AppCompatActivity {
         
         //shuffling keyset
         Collections.shuffle(questionPool, new Random(seed));
-        Collections.shuffle(terms, new Random(seed));
         //key arraylist ready for quiz
 
         //call populate function and begin quiz
-        populateWindow(questionPool, terms);
+        populateWindow(questionPool, hash);
 
     }//end onCreate
 
     //performs the randomizing of choices to populate the definition window and buttons
-    public ArrayList<String> populateWindow (ArrayList<String> defList, ArrayList<String> termList){
+    public ArrayList<String> populateWindow (ArrayList<String> defList, Map<String, String> hash){
         ArrayList<String> usedList = new ArrayList<>();
+        ArrayList<String> buttonChoices = new ArrayList<>();
+        Iterator<String> myIterator = hash.values().iterator();//create iterator
+
         while(currentPage <= 10){
             currentPage = getPageNum();
-            ArrayList<String> buttonChoices = new ArrayList<>();
             Random rand = new Random();
             //set up random int from 0-9
             int randomNum = rand.nextInt(10);
             //get a random definition
-            String def = questionPool.get(randomNum);
+            String def = defList.get(randomNum);
             usedList.add(def);
             //get value from def key
             String term = hash.get(def);
             //add term to button choices to ensure answer is in choices
-            buttonChoices.add(hash.get(term));
+            buttonChoices.add(term);
             //add random other terms to list for button population
             while(buttonChoices.size() < 4){
-                String randTerm = termList.get(randomNum);
+            //gets a random term using the arraylist of definitions with a random index modifier
+                String randTerm = hash.get(defList.get(randomNum));
                 if((!buttonChoices.contains(randTerm)) && (!buttonChoices.contains(term))){
                 buttonChoices.add(randTerm);
             }
@@ -118,13 +124,10 @@ public class Questions extends AppCompatActivity {
             bt_ans2.setText(buttonChoices.get(1));
             bt_ans3.setText(buttonChoices.get(2));
             bt_ans4.setText(buttonChoices.get(3));
-            return usedDefs;
-
         }
-
         //populate buttons and def window - break function down into smaller functions
         //add validation for correct and incorrect choices
-
+        return usedDefs;
     }
     //gets page number, increments by 1 each time
     public int getPageNum(){
@@ -132,19 +135,25 @@ public class Questions extends AppCompatActivity {
         return currentPage += 1;
     }
 
-    public int checkAnswer(ArrayList<String> arr){
-        while(true){
-            for (String ele: arr) {
-                if arr.contains(ele){
-
-                }
+    public int checkAnswer(String selection){
+        if(defWindow.getText().toString() == hash.get(selection)){
+        return Score += 1;}
+        else{
+            return Score;
             }
-        }
+
+//        while(true){
+//            for (String ele: arr) {
+//                if ele == {
+//
+//                }
+//            }
+//        }
 
     }
 
     public void choice1(View v) {
-
+        checkAnswer(bt_ans1.getText().toString());
     }
 
     public void choice2(View v) {

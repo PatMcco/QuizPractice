@@ -43,7 +43,7 @@
         android:id="@+id/bt_ans1"
         android:layout_width="170dp"
         android:layout_height="65dp"
-        android:layout_marginBottom="204dp"
+        android:layout_marginBottom="228dp"
         android:backgroundTint="#28B78D"
         android:onClick="choice1"
         android:text="ans1"
@@ -53,23 +53,23 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/bt_ans2"
+        android:id="@+id/bt_ans4"
         android:layout_width="170dp"
         android:layout_height="65dp"
-        android:layout_marginBottom="204dp"
+        android:layout_marginBottom="124dp"
         android:backgroundTint="#28B78D"
-        android:onClick="choice2"
-        android:text="ans2"
+        android:onClick="choice4"
+        android:text="ans4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/bt_ans1" />
+        app:layout_constraintStart_toEndOf="@+id/bt_ans3" />
 
     <Button
         android:id="@+id/bt_ans3"
         android:layout_width="170dp"
         android:layout_height="65dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="124dp"
         android:backgroundTint="#28B78D"
         android:onClick="choice3"
         android:text="ans3"
@@ -79,16 +79,32 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/bt_ans4"
+        android:id="@+id/bt_ans2"
         android:layout_width="170dp"
         android:layout_height="65dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="228dp"
         android:backgroundTint="#28B78D"
-        android:onClick="choice4"
-        android:text="ans4"
+        android:onClick="choice2"
+        android:text="ans2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/bt_ans3" />
+        app:layout_constraintStart_toEndOf="@+id/bt_ans1" />
+
+    <Button
+        android:id="@+id/bt_submit"
+        android:layout_width="170dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="122dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="#0CAABF"
+        android:onClick="submit"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf=""
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
