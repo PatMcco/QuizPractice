@@ -24,7 +24,6 @@ public class Questions extends AppCompatActivity {
     ArrayList<String>terms = new ArrayList<>();
     ArrayList<String>definitions = new ArrayList<>();
     Map<String,String>hash = new HashMap<>();
-    ArrayList<String>usedDefs = new ArrayList<>();
     ArrayList<String>choices = new ArrayList<>();
     ArrayList<String>questionPool = new ArrayList<>();
     InputStream is1;
@@ -35,10 +34,9 @@ public class Questions extends AppCompatActivity {
     int currentPage = 0;
     Intent intent;
     int Score;
+    ArrayList<String> usedList = new ArrayList<>();
 
 
-//    ArrayList<String> usedList = new ArrayList<>();
-//    ArrayList<String> buttonChoices = new ArrayList<>();
 
     //    Iterator<String> myIterator = hash.values().iterator();//create iterator
     @Override
@@ -96,9 +94,8 @@ public class Questions extends AppCompatActivity {
     }//end onCreate
 
     //performs the randomizing of choices to populate the definition window and buttons
-    public ArrayList<String> populateWindow (ArrayList<String> defList, Map<String, String> hash){
-
-        ArrayList<String> usedList = new ArrayList<>();
+    public ArrayList<String> populateWindow (ArrayList<String> defList, Map<String, String> hash, ArrayList<String> usedList){
+        ArrayList<String> buttonChoices = new ArrayList<>();
             currentPage = getPageNum();//fix this function
             Random rand = new Random();
             //set up random int from 0-9
@@ -107,14 +104,14 @@ public class Questions extends AppCompatActivity {
             String def = definitions.get(randomNum);
             usedList.add(def);
             //get value from def key
-            String term = hash.get(def);
+            String rightAnswer = hash.get(def);
             //add term to button choices to ensure answer is in choices
-            buttonChoices.add(term);
+            buttonChoices.add(rightAnswer);
             //add random other terms to list for button population
             while(buttonChoices.size() < 4){
             //gets a random term using the arraylist of definitions with a random index modifier
                 String randTerm = hash.get(defList.get(randomNum));
-                if((!buttonChoices.contains(randTerm)) && (!buttonChoices.contains(term))){
+                if((!buttonChoices.contains(randTerm)) && (!buttonChoices.contains(rightAnswer))){
                 buttonChoices.add(randTerm);
             }
             }
@@ -123,11 +120,11 @@ public class Questions extends AppCompatActivity {
             bt_ans2.setText(buttonChoices.get(1));
             bt_ans3.setText(buttonChoices.get(2));
             bt_ans4.setText(buttonChoices.get(3));
+        return usedList;
         }
         //populate buttons and def window - break function down into smaller functions
         //add validation for correct and incorrect choices
-        return usedDefs;
-    }
+
     //gets page number, increments by 1 each time
     public int getPageNum(){
         int currentPage = Integer.parseInt(pageNum.getText().toString());
