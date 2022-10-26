@@ -1,8 +1,6 @@
 package com.example.quizpractice;
 import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,12 +8,11 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-
 import java.util.Collections;
 import java.util.HashMap;
-
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
@@ -26,7 +23,7 @@ public class Questions extends AppCompatActivity {
     Button bt_ans1,bt_ans2,bt_ans3,bt_ans4;
     ArrayList<String>terms = new ArrayList<>();
     ArrayList<String>definitions = new ArrayList<>();
-    Map<String,String> hash = new HashMap<>();
+    Map<String,String>hash = new HashMap<>();
     ArrayList<String>usedDefs = new ArrayList<>();
     ArrayList<String>choices = new ArrayList<>();
     InputStream is1;
@@ -77,50 +74,66 @@ public class Questions extends AppCompatActivity {
             t.printStackTrace();
         }
 
-//        //shuffle both arraylists evenly, so the order is random but the pairs are the same
-//        Collections.shuffle(definitions, new Random(seed));
-//        Collections.shuffle(terms, new Random(seed));
-
-        //adding both arraylists to hashmap after shuffle
+        //adding both arraylists to hashmap
         for(int i = 0; i < definitions.size(); i++){
             hash.put(definitions.get(i), terms.get(i));
         }
-        //put keys into a list and randomize them by nanotime
-        Set<String> keySet = hash.keySet();
-        List<String> keyList = new ArrayList<>(keySet);
 
-        int size = keyList.size();
+        //shuffling arraylists equally
+        int size = definitions.size();
         int randId = new Random(seed).nextInt(size);
 
-        String randomDef = keyList.get(randId);
+        Collections.shuffle(definitions, new Random(seed));
+        Collections.shuffle(terms, new Random(seed));//arraylists ready for quiz
+
+        //put matching term and definition in arraylist to prep first question
+        String randomDef = definitions.get(randId);
         String randomTerm = hash.get(randomDef);
+        List<String> correctMatch = new ArrayList<>();
+        correctMatch.add(randomDef);
+        correctMatch.add(randomTerm);
+
 
         while(currentPage <= 10){
-            String currentTerm = randomTerm;
-            String currentQuestion = randomDef;//assign random definition to currentQuestion
+            String currentQuestion = correctMatch.get(0);
+            String currentTerm = correctMatch.get(1);
+            //assign random definition to currentQuestion
             //check if definition is contained in the previously used definitions, if all are used, end.
-            while(usedDefs.contains(currentQuestion)) {
+
+            while(!usedDefs.contains(currentQuestion)) {
                 currentQuestion = randomDef;
                 currentTerm = randomTerm;
                 if(usedDefs.size() == 10){
                     break;
                 }
             }
-            defWindow.setText(currentQuestion);
-            usedDefs.add(currentQuestion);
-            while(choices.size() < 3){
-                choices.add(currentTerm);
-                currentTerm = randomTerm;
-                if(!choices.contains(currentTerm)){
-                    choices.add(currentTerm);
-                }
-
-
-            }
+            defWindow.setText(currentQuestion);//set current question to definition window
+            usedDefs.add(currentQuestion);//add current question to pool of already used questions
         }
 
     }//end onCreate
 
+    //performs the randomizing of choices to populate the definition window and buttons
+    public ArrayList<String> populateWindow(ArrayList<String>defList, ArrayList<String> termList, ArrayList<String> usedList){
+        ArrayList<String> buttonChoices = new ArrayList<>();
+        Random rand = new Random();
+        //set up random int from 0-9
+        int randomNum = rand.nextInt(10);
+        //get a random definition
+        String def = defList.get(randomNum);
+        //get value from def key
+        String term = hash.get(def);
+        buttonChoices.add(term);
+        //add correct term and random other terms to list for button population
+        while(buttonChoices.size() < 4){
+            String randTerm = termList.get(randomNum);
+            if((!buttonChoices.contains(randTerm)) && (!buttonChoices.contains(term))){
+            buttonChoices.add(randTerm);
+        }
+        }
+        //populate buttons and def window - break function down into smaller functions
+        //add validation for correct and incorrect choices
+    }
 
 
     public void choice1(View v) {
