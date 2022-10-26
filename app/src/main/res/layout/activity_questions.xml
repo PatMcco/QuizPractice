@@ -31,7 +31,7 @@
         android:background="#008A949B"
         android:duplicateParentState="false"
         android:gravity="center"
-        android:text="page #"
+        android:text="page 1"
         android:textColor="#fffff0"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"

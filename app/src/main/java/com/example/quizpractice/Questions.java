@@ -8,6 +8,7 @@ import android.widget.TextView;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,8 +37,10 @@ public class Questions extends AppCompatActivity {
     int Score;
 
 
+//    ArrayList<String> usedList = new ArrayList<>();
+//    ArrayList<String> buttonChoices = new ArrayList<>();
 
-
+    //    Iterator<String> myIterator = hash.values().iterator();//create iterator
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,35 +80,31 @@ public class Questions extends AppCompatActivity {
             t.printStackTrace();
         }
 
+        //shuffling arrays
+        Collections.shuffle(definitions, new Random(seed));
+        Collections.shuffle(terms, new Random(seed));
+
+        //key arraylist ready for quiz
         //adding both arraylists to hashmap
         for(int i = 0; i < definitions.size(); i++){
             hash.put(definitions.get(i), terms.get(i));
         }
-        //adding keys to an array
-        questionPool.addAll(hash.keySet());
-        
-        //shuffling keyset
-        Collections.shuffle(questionPool, new Random(seed));
-        //key arraylist ready for quiz
 
         //call populate function and begin quiz
-        populateWindow(questionPool, hash);
+        populateWindow(definitions, hash);
 
     }//end onCreate
 
     //performs the randomizing of choices to populate the definition window and buttons
     public ArrayList<String> populateWindow (ArrayList<String> defList, Map<String, String> hash){
-        ArrayList<String> usedList = new ArrayList<>();
-        ArrayList<String> buttonChoices = new ArrayList<>();
-        Iterator<String> myIterator = hash.values().iterator();//create iterator
 
-        while(currentPage <= 10){
-            currentPage = getPageNum();
+        ArrayList<String> usedList = new ArrayList<>();
+            currentPage = getPageNum();//fix this function
             Random rand = new Random();
             //set up random int from 0-9
             int randomNum = rand.nextInt(10);
             //get a random definition
-            String def = defList.get(randomNum);
+            String def = definitions.get(randomNum);
             usedList.add(def);
             //get value from def key
             String term = hash.get(def);
@@ -149,6 +148,10 @@ public class Questions extends AppCompatActivity {
 //                }
 //            }
 //        }
+
+    }
+
+    public String getRandomKey(Map<String, String> hash, ArrayList<String> usedDefs) {
 
     }
 
