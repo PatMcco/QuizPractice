@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
         startButton = findViewById(R.id.bt_start);
 
         startButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, Questions.class);

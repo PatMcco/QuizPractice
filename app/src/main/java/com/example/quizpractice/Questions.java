@@ -8,32 +8,25 @@ import android.widget.TextView;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
 public class Questions extends AppCompatActivity {
 
-    TextView defWindow;
-    TextView pageNum;
+    TextView defWindow, pageNum, score;
     Button bt_ans1,bt_ans2,bt_ans3,bt_ans4,bt_submit;
     ArrayList<String>terms = new ArrayList<>();
     ArrayList<String>definitions = new ArrayList<>();
     Map<String,String>hash = new HashMap<>();
-    ArrayList<String>choices = new ArrayList<>();
-    ArrayList<String>questionPool = new ArrayList<>();
     InputStream is1;
     InputStream is2;
     String eachDef;
     String eachTerm;
     long seed = System.nanoTime();
-    int currentPage = 0;
-    Intent intent;
-    int Score;
+    //Intent intent;
     ArrayList<String> usedList = new ArrayList<>();
 
 
@@ -50,7 +43,10 @@ public class Questions extends AppCompatActivity {
         bt_ans3 = findViewById(R.id.bt_ans3);
         bt_ans4 = findViewById(R.id.bt_ans4);
         bt_submit = findViewById(R.id.bt_submit);
+        score = findViewById(R.id.score);
         pageNum.setText("1");
+        score.setText("0");
+
 
         //read in the definitions raw file to an arraylist
         try {
@@ -85,87 +81,108 @@ public class Questions extends AppCompatActivity {
         //key arraylist ready for quiz
         //adding both arraylists to hashmap
         for(int i = 0; i < definitions.size(); i++){
-            hash.put(definitions.get(i), terms.get(i));
+            hash.put(definitions.get(i).toString(), terms.get(i).toString());
         }
 
         //call populate function and begin quiz
-        populateWindow(definitions, hash);
+        usedList = populateWindow(definitions, hash, usedList);
 
     }//end onCreate
 
     //performs the randomizing of choices to populate the definition window and buttons
     public ArrayList<String> populateWindow (ArrayList<String> defList, Map<String, String> hash, ArrayList<String> usedList){
         ArrayList<String> buttonChoices = new ArrayList<>();
-            currentPage = getPageNum();//fix this function
-            Random rand = new Random();
-            //set up random int from 0-9
-            int randomNum = rand.nextInt(10);
-            //get a random definition
-            String def = definitions.get(randomNum);
-            usedList.add(def);
+            String currentPage = pageNum.getText().toString();
+            int convert = Integer.parseInt(currentPage);
+            convert += 1;
+            pageNum.setText(String.valueOf(convert));
+            String def = getDef();
             //get value from def key
             String rightAnswer = hash.get(def);
             //add term to button choices to ensure answer is in choices
             buttonChoices.add(rightAnswer);
             //add random other terms to list for button population
             while(buttonChoices.size() < 4){
+                Random rand = new Random();
+                //set up random int from 0-9
+                int randomNum = rand.nextInt(10);
             //gets a random term using the arraylist of definitions with a random index modifier
                 String randTerm = hash.get(defList.get(randomNum));
-                if((!buttonChoices.contains(randTerm)) && (!buttonChoices.contains(rightAnswer))){
+                if((randTerm != rightAnswer) && (!buttonChoices.contains(randTerm))){
                 buttonChoices.add(randTerm);
             }
             }
             defWindow.setText(def);
+            Collections.shuffle(buttonChoices, new Random(seed));
             bt_ans1.setText(buttonChoices.get(0));
             bt_ans2.setText(buttonChoices.get(1));
             bt_ans3.setText(buttonChoices.get(2));
             bt_ans4.setText(buttonChoices.get(3));
+            pageNum.setText(currentPage);
         return usedList;
         }
         //populate buttons and def window - break function down into smaller functions
         //add validation for correct and incorrect choices
 
-    //gets page number, increments by 1 each time
-    public int getPageNum(){
-        int currentPage = Integer.parseInt(pageNum.getText().toString());
-        return currentPage += 1;
-    }
 
-    public int checkAnswer(String selection){
-        if(defWindow.getText().toString() == hash.get(selection)){
-        return Score += 1;}
-        else{
-            return Score;
-            }
+    public String getDef(){
+        Random rand = new Random();
+        //set up random int from 0-9
+        int randomNum = rand.nextInt(10);
+        String def = definitions.get(randomNum);
+        if(usedList.contains(def)){
+            return getDef();
+        }
+        else {usedList.add(def); return def;}
+        }
 
-//        while(true){
-//            for (String ele: arr) {
-//                if ele == {
-//
-//                }
-//            }
-//        }
 
-    }
-
-    public String getRandomKey(Map<String, String> hash, ArrayList<String> usedDefs) {
-
+    public boolean checkAnswer(String selection) {
+        //retrieves the key from the hashmap, compares to the definition in the textview,
+        // adjusts score
+        if (defWindow.getText().toString().equals(hash.get(selection))) {
+            int newScore = Integer.parseInt(score.getText().toString());
+            newScore += 1;
+            score.setText(String.valueOf(newScore));
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void choice1(View v) {
-        checkAnswer(bt_ans1.getText().toString());
+        if (!checkAnswer(bt_ans1.getText().toString())){
+            bt_ans1.setText("X");
+        }else checkAnswer(bt_ans1.getText().toString());
+            bt_ans1.setText("correct");
     }
 
     public void choice2(View v) {
-
+        if (!checkAnswer(bt_ans2.getText().toString())){
+            bt_ans2.setText("X");
+        }
+        else checkAnswer(bt_ans2.getText().toString());
+            bt_ans2.setText("correct");
     }
 
     public void choice3(View v) {
-
+        if (!checkAnswer(bt_ans3.getText().toString())){
+            bt_ans3.setText("X");
+        }
+        else checkAnswer(bt_ans3.getText().toString());
+            bt_ans3.setText("correct");
     }
 
     public void choice4(View v) {
+        if (!checkAnswer(bt_ans4.getText().toString())){
+            bt_ans4.setText("X");
+        }
+        else checkAnswer(bt_ans4.getText().toString());
+            bt_ans4.setText("correct");
+    }
 
+    public void submit(View v){
+        populateWindow(definitions, hash, usedList);
     }
 }
 
