@@ -140,7 +140,8 @@ public class Questions extends AppCompatActivity {
     public boolean checkAnswer(String selection) {
         //retrieves the key from the hashmap, compares to the definition in the textview,
         // adjusts score
-        if (defWindow.getText().toString().equals(hash.get(selection))) {
+        String defView  = defWindow.getText().toString();
+        if (defView.equals(selection)) {
             int newScore = Integer.parseInt(score.getText().toString());
             newScore += 1;
             score.setText(String.valueOf(newScore));
@@ -151,35 +152,29 @@ public class Questions extends AppCompatActivity {
     }
 
     public void choice1(View v) {
-        if (!checkAnswer(bt_ans1.getText().toString())){
+        String selection = bt_ans1.getText().toString();
+        if (!checkAnswer(selection)){
             bt_ans1.setText("X");
-        }else checkAnswer(bt_ans1.getText().toString());
-            bt_ans1.setText("correct");
-    }
+        }else bt_ans1.setText("correct");}
+
 
     public void choice2(View v) {
-        if (!checkAnswer(bt_ans2.getText().toString())){
+        String selection = bt_ans2.getText().toString();
+        if (!checkAnswer(selection)){
             bt_ans2.setText("X");
-        }
-        else checkAnswer(bt_ans2.getText().toString());
-            bt_ans2.setText("correct");
-    }
+        }else bt_ans2.setText("correct");}
 
     public void choice3(View v) {
-        if (!checkAnswer(bt_ans3.getText().toString())){
+        String selection = bt_ans3.getText().toString();
+        if (!checkAnswer(selection)){
             bt_ans3.setText("X");
-        }
-        else checkAnswer(bt_ans3.getText().toString());
-            bt_ans3.setText("correct");
-    }
+        }else bt_ans3.setText("correct");}
 
     public void choice4(View v) {
-        if (!checkAnswer(bt_ans4.getText().toString())){
+        String selection = bt_ans4.getText().toString();
+        if (!checkAnswer(selection)){
             bt_ans4.setText("X");
-        }
-        else checkAnswer(bt_ans4.getText().toString());
-            bt_ans4.setText("correct");
-    }
+        }else bt_ans4.setText("correct");}
 
     public void submit(View v){
         populateWindow(definitions, hash, usedList);
