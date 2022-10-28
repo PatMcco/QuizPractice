@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Questions extends AppCompatActivity {
 
@@ -130,11 +131,19 @@ public class Questions extends AppCompatActivity {
             bt_ans2.setText(buttonChoices.get(1));
             bt_ans3.setText(buttonChoices.get(2));
             bt_ans4.setText(buttonChoices.get(3));
+            resetColors();
+            return;
         }
         //populate buttons and def window - break function down into smaller functions
         //add validation for correct and incorrect choices
 
 
+    public void resetColors(){
+        bt_ans1.setTextColor(Color.WHITE);
+        bt_ans2.setTextColor(Color.WHITE);
+        bt_ans3.setTextColor(Color.WHITE);
+        bt_ans4.setTextColor(Color.WHITE);
+    }
     public String getDef(){
         Random rand = new Random();
         //set up random int from 0-9
@@ -168,25 +177,20 @@ public class Questions extends AppCompatActivity {
             return false;
         }
     }
-
+// button functionality \/\/\/\/\/
     public void choice1(View v) {
         String selection = bt_ans1.getText().toString();
         if (checkAnswer(selection)){
             try {
-                bt_ans1.setText("correct");
-                bt_ans1.setTextColor(Color.GREEN);
-                Thread.sleep(400);
+                TimeUnit.MILLISECONDS.sleep(600);
                 populateWindow(definitions, hash);
-                return;
             } catch (InterruptedException e) {
                 Log.e("TAG", "thread interrupted", e);
             }
         }
         else
             try {
-                bt_ans1.setText("x");
-                bt_ans1.setTextColor(Color.RED);
-                Thread.sleep(400);
+                TimeUnit.MILLISECONDS.sleep(600);
                 populateWindow(definitions, hash);
             } catch (InterruptedException e) {
                 Log.e("TAG", "thread interrupted", e);
@@ -195,20 +199,18 @@ public class Questions extends AppCompatActivity {
 
     public void choice2(View v) {
         String selection = bt_ans2.getText().toString();
+
         if (checkAnswer(selection)){
-            bt_ans2.setText("correct");
             try {
-                Thread.sleep(400);
+                TimeUnit.MILLISECONDS.sleep(600);
                 populateWindow(definitions, hash);
-                return;
             } catch (InterruptedException e) {
                 Log.e("TAG", "thread interrupted", e);
             }
         }
         else
-            bt_ans2.setText("x");
             try {
-                Thread.sleep(400);
+                TimeUnit.MILLISECONDS.sleep(600);
                 populateWindow(definitions, hash);
             } catch (InterruptedException e) {
                 Log.e("TAG", "thread interrupted", e);
@@ -218,18 +220,15 @@ public class Questions extends AppCompatActivity {
     public void choice3(View v) {
         String selection = bt_ans3.getText().toString();
         if (checkAnswer(selection)){
-            bt_ans3.setText("correct");
             try {
-                Thread.sleep(400);
+                TimeUnit.MILLISECONDS.sleep(600);
                 populateWindow(definitions, hash);
-                return;
             } catch (InterruptedException e) {
                 Log.e("TAG", "thread interrupted", e);
             }
-        }
-        else bt_ans3.setText("x");
+        }else
             try {
-                Thread.sleep(400);
+                TimeUnit.MILLISECONDS.sleep(600);
                 populateWindow(definitions, hash);
             } catch (InterruptedException e) {
                 Log.e("TAG", "thread interrupted", e);
@@ -239,18 +238,17 @@ public class Questions extends AppCompatActivity {
     public void choice4(View v) {
         String selection = bt_ans4.getText().toString();
         if (checkAnswer(selection)){
-            bt_ans4.setText("correct");
             try {
-                Thread.sleep(400);
+                TimeUnit.MILLISECONDS.sleep(600);
                 populateWindow(definitions, hash);
                 return;
             } catch (InterruptedException e) {
                 Log.e("TAG", "thread interrupted", e);
             }
         }
-        else bt_ans4.setText("x");
+        else
             try {
-                Thread.sleep(400);
+                TimeUnit.MILLISECONDS.sleep(600);
                 populateWindow(definitions, hash);
             } catch (InterruptedException e) {
                 Log.e("TAG", "thread interrupted", e);

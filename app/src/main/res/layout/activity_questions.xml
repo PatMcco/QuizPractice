@@ -47,6 +47,7 @@
         android:backgroundTint="#28B78D"
         android:onClick="choice1"
         android:text="ans1"
+        android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/bt_ans2"
         app:layout_constraintHorizontal_bias="0.5"
