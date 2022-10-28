@@ -11,13 +11,15 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 public class Questions extends AppCompatActivity {
 
     TextView defWindow, pageNum, score;
-    Button bt_ans1,bt_ans2,bt_ans3,bt_ans4,bt_submit;
+    Button bt_ans1,bt_ans2,bt_ans3,bt_ans4;
     ArrayList<String>terms = new ArrayList<>();
     ArrayList<String>definitions = new ArrayList<>();
     Map<String,String>hash = new HashMap<>();
@@ -26,7 +28,6 @@ public class Questions extends AppCompatActivity {
     String eachDef;
     String eachTerm;
     long seed = System.nanoTime();
-    //Intent intent;
     ArrayList<String> usedList = new ArrayList<>();
 
 
@@ -42,9 +43,8 @@ public class Questions extends AppCompatActivity {
         bt_ans2 = findViewById(R.id.bt_ans2);
         bt_ans3 = findViewById(R.id.bt_ans3);
         bt_ans4 = findViewById(R.id.bt_ans4);
-        bt_submit = findViewById(R.id.bt_submit);
         score = findViewById(R.id.score);
-        pageNum.setText("1");
+        pageNum.setText("0");
         score.setText("0");
 
 
@@ -81,21 +81,28 @@ public class Questions extends AppCompatActivity {
         //key arraylist ready for quiz
         //adding both arraylists to hashmap
         for(int i = 0; i < definitions.size(); i++){
-            hash.put(definitions.get(i).toString(), terms.get(i).toString());
+            hash.put(definitions.get(i), terms.get(i));
         }
 
         //call populate function and begin quiz
-        usedList = populateWindow(definitions, hash, usedList);
+        populateWindow(definitions, hash);
 
     }//end onCreate
 
     //performs the randomizing of choices to populate the definition window and buttons
-    public ArrayList<String> populateWindow (ArrayList<String> defList, Map<String, String> hash, ArrayList<String> usedList){
+    public void populateWindow (ArrayList<String> defList, Map<String, String> hash){
+        if(pageNum.getText().equals("10")){
+            String finalScore = score.getText().toString();
+            Intent intent = new Intent(Questions.this, NameEntry.class);
+            intent.putExtra("score", finalScore);
+            startActivity(intent);
+            return;
+        }
         ArrayList<String> buttonChoices = new ArrayList<>();
             String currentPage = pageNum.getText().toString();
             int convert = Integer.parseInt(currentPage);
             convert += 1;
-            pageNum.setText(String.valueOf(convert));
+            currentPage = String.valueOf(convert);
             String def = getDef();
             //get value from def key
             String rightAnswer = hash.get(def);
@@ -103,23 +110,23 @@ public class Questions extends AppCompatActivity {
             buttonChoices.add(rightAnswer);
             //add random other terms to list for button population
             while(buttonChoices.size() < 4){
-                Random rand = new Random();
+                Random rand = new Random(System.nanoTime());
                 //set up random int from 0-9
                 int randomNum = rand.nextInt(10);
             //gets a random term using the arraylist of definitions with a random index modifier
                 String randTerm = hash.get(defList.get(randomNum));
-                if((randTerm != rightAnswer) && (!buttonChoices.contains(randTerm))){
-                buttonChoices.add(randTerm);
+                if((!Objects.equals(randTerm, rightAnswer)) && (!buttonChoices.contains(randTerm))){
+                    buttonChoices.add(randTerm);
+                    Collections.shuffle(buttonChoices, new Random(System.nanoTime()));
+
             }
             }
             defWindow.setText(def);
-            Collections.shuffle(buttonChoices, new Random(seed));
+            pageNum.setText(currentPage);
             bt_ans1.setText(buttonChoices.get(0));
             bt_ans2.setText(buttonChoices.get(1));
             bt_ans3.setText(buttonChoices.get(2));
             bt_ans4.setText(buttonChoices.get(3));
-            pageNum.setText(currentPage);
-        return usedList;
         }
         //populate buttons and def window - break function down into smaller functions
         //add validation for correct and incorrect choices
@@ -140,11 +147,19 @@ public class Questions extends AppCompatActivity {
     public boolean checkAnswer(String selection) {
         //retrieves the key from the hashmap, compares to the definition in the textview,
         // adjusts score
+        String strKey = null;
         String defView  = defWindow.getText().toString();
-        if (defView.equals(selection)) {
+        for(Map.Entry entry: hash.entrySet()){
+            if(selection.equals(entry.getValue())){
+                strKey = (String) entry.getKey();
+                break; //breaking because its one to one map
+            }
+        }
+        if (defView.equals(strKey)) {
             int newScore = Integer.parseInt(score.getText().toString());
             newScore += 1;
-            score.setText(String.valueOf(newScore));
+            String scoreUpdate = String.valueOf(newScore);
+            score.setText(scoreUpdate);
             return true;
         } else {
             return false;
@@ -153,32 +168,88 @@ public class Questions extends AppCompatActivity {
 
     public void choice1(View v) {
         String selection = bt_ans1.getText().toString();
-        if (!checkAnswer(selection)){
-            bt_ans1.setText("X");
-        }else bt_ans1.setText("correct");}
-
+        if (checkAnswer(selection)){
+            bt_ans1.setText("correct");
+            try {
+                Thread.sleep(200);
+                populateWindow(definitions, hash);
+                return;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        else bt_ans1.setText("x");
+            try {
+                Thread.sleep(200);
+                populateWindow(definitions, hash);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+    }
 
     public void choice2(View v) {
         String selection = bt_ans2.getText().toString();
-        if (!checkAnswer(selection)){
-            bt_ans2.setText("X");
-        }else bt_ans2.setText("correct");}
+        if (checkAnswer(selection)){
+            bt_ans2.setText("correct");
+            try {
+                Thread.sleep(200);
+                populateWindow(definitions, hash);
+                return;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+            bt_ans2.setText("x");
+            try {
+                Thread.sleep(200);
+                populateWindow(definitions, hash);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
     public void choice3(View v) {
         String selection = bt_ans3.getText().toString();
-        if (!checkAnswer(selection)){
-            bt_ans3.setText("X");
-        }else bt_ans3.setText("correct");}
+        if (checkAnswer(selection)){
+            bt_ans3.setText("correct");
+            try {
+                Thread.sleep(200);
+                populateWindow(definitions, hash);
+                return;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        else bt_ans3.setText("x");
+            try {
+                Thread.sleep(200);
+                populateWindow(definitions, hash);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
     public void choice4(View v) {
         String selection = bt_ans4.getText().toString();
-        if (!checkAnswer(selection)){
-            bt_ans4.setText("X");
-        }else bt_ans4.setText("correct");}
-
-    public void submit(View v){
-        populateWindow(definitions, hash, usedList);
-    }
+        if (checkAnswer(selection)){
+            bt_ans4.setText("correct");
+            try {
+                Thread.sleep(200);
+                populateWindow(definitions, hash);
+                return;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        else bt_ans4.setText("x");
+            try {
+                Thread.sleep(200);
+                populateWindow(definitions, hash);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 }
 
 
