@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#243743"
+    android:textAlignment="center"
     tools:context=".HighScores">
 
     <TextView
@@ -29,29 +30,26 @@
         android:layout_height="56dp"
         android:layout_marginTop="472dp"
         android:backgroundTint="#28B78D"
-        android:text="Restart"
         android:onClick="restartPressed"
+        android:text="Restart"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <TextView
         android:id="@+id/highScoreList"
-        android:layout_width="215dp"
-        android:layout_height="135dp"
-        android:layout_marginTop="213dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:lines="4"
+        android:layout_width="219dp"
+        android:layout_height="69dp"
+        android:layout_marginTop="227dp"
+        android:text="-"
+        android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

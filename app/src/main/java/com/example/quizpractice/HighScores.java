@@ -9,12 +9,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class HighScores extends AppCompatActivity {
 
     Button restart;
-    EditText scoreTable;
+    TextView scoreTable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

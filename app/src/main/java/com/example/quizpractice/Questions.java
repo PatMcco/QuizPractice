@@ -2,6 +2,7 @@ package com.example.quizpractice;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ public class Questions extends AppCompatActivity {
     String eachTerm;
     long seed = System.nanoTime();
     ArrayList<String> usedList = new ArrayList<>();
+    private static final String TAG = "myLog";
 
 
 
@@ -171,19 +173,19 @@ public class Questions extends AppCompatActivity {
         if (checkAnswer(selection)){
             bt_ans1.setText("correct");
             try {
-                Thread.sleep(200);
+                Thread.sleep(400);
                 populateWindow(definitions, hash);
                 return;
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.e("TAG", "thread interrupted", e);
             }
         }
         else bt_ans1.setText("x");
             try {
-                Thread.sleep(200);
+                Thread.sleep(400);
                 populateWindow(definitions, hash);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.e("TAG", "thread interrupted", e);
             }
     }
 
@@ -192,20 +194,20 @@ public class Questions extends AppCompatActivity {
         if (checkAnswer(selection)){
             bt_ans2.setText("correct");
             try {
-                Thread.sleep(200);
+                Thread.sleep(400);
                 populateWindow(definitions, hash);
                 return;
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.e("TAG", "thread interrupted", e);
             }
         }
         else
             bt_ans2.setText("x");
             try {
-                Thread.sleep(200);
+                Thread.sleep(400);
                 populateWindow(definitions, hash);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.e("TAG", "thread interrupted", e);
             }
         }
 
@@ -214,19 +216,19 @@ public class Questions extends AppCompatActivity {
         if (checkAnswer(selection)){
             bt_ans3.setText("correct");
             try {
-                Thread.sleep(200);
+                Thread.sleep(400);
                 populateWindow(definitions, hash);
                 return;
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.e("TAG", "thread interrupted", e);
             }
         }
         else bt_ans3.setText("x");
             try {
-                Thread.sleep(200);
+                Thread.sleep(400);
                 populateWindow(definitions, hash);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.e("TAG", "thread interrupted", e);
             }
         }
 
@@ -235,19 +237,19 @@ public class Questions extends AppCompatActivity {
         if (checkAnswer(selection)){
             bt_ans4.setText("correct");
             try {
-                Thread.sleep(200);
+                Thread.sleep(400);
                 populateWindow(definitions, hash);
                 return;
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.e("TAG", "thread interrupted", e);
             }
         }
         else bt_ans4.setText("x");
             try {
-                Thread.sleep(200);
+                Thread.sleep(400);
                 populateWindow(definitions, hash);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.e("TAG", "thread interrupted", e);
             }
         }
 }
