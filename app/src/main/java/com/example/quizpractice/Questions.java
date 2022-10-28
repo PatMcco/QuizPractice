@@ -1,6 +1,7 @@
 package com.example.quizpractice;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -171,8 +172,9 @@ public class Questions extends AppCompatActivity {
     public void choice1(View v) {
         String selection = bt_ans1.getText().toString();
         if (checkAnswer(selection)){
-            bt_ans1.setText("correct");
             try {
+                bt_ans1.setText("correct");
+                bt_ans1.setTextColor(Color.GREEN);
                 Thread.sleep(400);
                 populateWindow(definitions, hash);
                 return;
@@ -180,8 +182,10 @@ public class Questions extends AppCompatActivity {
                 Log.e("TAG", "thread interrupted", e);
             }
         }
-        else bt_ans1.setText("x");
+        else
             try {
+                bt_ans1.setText("x");
+                bt_ans1.setTextColor(Color.RED);
                 Thread.sleep(400);
                 populateWindow(definitions, hash);
             } catch (InterruptedException e) {
